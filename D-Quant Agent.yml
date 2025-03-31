@@ -1,0 +1,201 @@
+app:
+  description: 一个智能量化投资助手，用户可以在{{input1}}中选择市场偏好，在{{input2}}中选择风险偏好，或手动输入其具体要求。分析用户要求，使用query_stock获取最新股票数据，使用yahoo_finance_news获取最新股市新闻，使用sentiment_analyse分析股市新闻的情绪信息并将其纳入分析中，最终输出结果为：向用户推荐适合其投资的股。并分析推荐股票一个月内的相关股市指标，给出500字以上的详细量化投资策略，给出具体理由，并给出量化投资的策略执行文件。在最终输出时不要出现使用了哪些工具。
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: agent-chat
+  name: D-Quant Agent
+  use_icon_as_answer_icon: true
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.5@fd6efd37c2a931911de8ab9ca3ba2da303bef146d45ee87ad896b04b36d09403
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/yahoo:0.0.3@5e9b2a43c66a6b74d1d48278edd625f8bc9d9c177ff170df309309c11d8a693f
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/alphavantage:0.0.2@abfae4f295632d2ee8a99775072e4c2e012e13bc6220d745d41da4baa9073b7a
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/json_process:0.0.2@7afb534cc85b28a8e9c7f9410d1cfc31fb7bd3950023355a37059dbe809ac776
+kind: app
+model_config:
+  agent_mode:
+    enabled: true
+    max_iteration: 5
+    prompt: null
+    strategy: react
+    tools:
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/yahoo/yahoo
+      provider_name: langgenius/yahoo/yahoo
+      provider_type: builtin
+      tool_label: 分析
+      tool_name: yahoo_finance_analytics
+      tool_parameters:
+        end_date: ''
+        start_date: ''
+        symbol: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/yahoo/yahoo
+      provider_name: langgenius/yahoo/yahoo
+      provider_type: builtin
+      tool_label: 股票信息
+      tool_name: yahoo_finance_ticker
+      tool_parameters:
+        symbol: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/yahoo/yahoo
+      provider_name: langgenius/yahoo/yahoo
+      provider_type: builtin
+      tool_label: 新闻
+      tool_name: yahoo_finance_news
+      tool_parameters:
+        symbol: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/alphavantage/alphavantage
+      provider_name: langgenius/alphavantage/alphavantage
+      provider_type: builtin
+      tool_label: query_stock
+      tool_name: query_stock
+      tool_parameters:
+        code: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/json_process/json_process
+      provider_name: langgenius/json_process/json_process
+      provider_type: builtin
+      tool_label: JSON 解析
+      tool_name: parse
+      tool_parameters:
+        content: ''
+        ensure_ascii: ''
+        json_filter: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/time/time
+      provider_name: langgenius/time/time
+      provider_type: builtin
+      tool_label: 获取当前时间
+      tool_name: current_time
+      tool_parameters:
+        format: ''
+        timezone: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: langgenius/time/time
+      provider_name: langgenius/time/time
+      provider_type: builtin
+      tool_label: 获取时间戳
+      tool_name: localtime_to_timestamp
+      tool_parameters:
+        localtime: ''
+        timezone: ''
+    - enabled: true
+      isDeleted: false
+      notAuthor: false
+      provider_id: ef6b98ad-7bbf-4cfd-aaa8-3984f419797a
+      provider_name: 股市新闻情感分析
+      provider_type: workflow
+      tool_label: 股市新闻情感分析
+      tool_name: sentiment_analyse
+      tool_parameters:
+        stock_code: ''
+  annotation_reply:
+    enabled: false
+  chat_prompt_config: {}
+  completion_prompt_config: {}
+  dataset_configs:
+    datasets:
+      datasets: []
+    reranking_enable: false
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .MPGA
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: deepseek-reasoner
+    provider: langgenius/deepseek/deepseek
+  more_like_this:
+    enabled: false
+  opening_statement: 您好，我是D-Quant智能量化投资助手，您可以在投资信息栏中选择我们预设的投资偏好或者手动输入您的投资偏好，我会为您量身定制属于您的量化投资策略。
+  pre_prompt: 一个智能量化投资助手，用户可以在{{input1}}中选择市场偏好，在{{input2}}中选择风险偏好，或手动输入其具体要求。分析用户要求，使用query_stock获取最新股票数据，使用yahoo_finance_news获取最新股市新闻，使用sentiment_analyse分析股市新闻的情绪信息并将其纳入分析中，最终输出结果为：向用户推荐适合其投资的股。并分析推荐股票一个月内的相关股市指标，给出500字以上的详细量化投资策略，给出具体理由，并给出量化投资的策略执行文件。在最终输出时不要出现使用了哪些工具。
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: true
+  suggested_questions: []
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form:
+  - select:
+      default: ''
+      label: 市场偏好
+      options:
+      - A股
+      - 港股
+      - 美股
+      required: false
+      variable: input1
+  - select:
+      default: ''
+      label: 风险偏好
+      options:
+      - 喜爱风险
+      - 风险适中
+      - 厌恶风险
+      required: false
+      variable: input2
+version: 0.1.5
